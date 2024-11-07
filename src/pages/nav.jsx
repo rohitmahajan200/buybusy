@@ -10,6 +10,8 @@ export default function Navbar(){
         <Link to={'/login'}>Sign In</Link>
         <br />
         <Link to={'/cart'}>Cart</Link>
+        <br />
+        <Link to={'cart/orders'}>Orders</Link>
         <Outlet />
         </>
     )

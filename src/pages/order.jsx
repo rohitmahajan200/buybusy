@@ -1,20 +1,47 @@
-import React,{useEffect} from "react"
+import React,{useEffect, useState} from "react"
 import { useCartValues } from "../cartContext";
-
+import { query,collection,where,getDocs } from "firebase/firestore";
+import { db } from "../firebaseinit";
 export default function Order(){
-    const{cart,setCarts}=useCartValues();
-    useEffect(()=>{ //function to set total amount
-        async function fetchTotalAmt() {
-            cart.map((item,index)=>{
-                console.log(item);
-            })
+    const{cart}=useCartValues([]);
+    const[order,setOrder]=useState([]);
+    const mail=sessionStorage.getItem('id');
+    let newCartRef;
+    let q=query(collection(db,"users"), where("email", "==" , mail));
+    
+    const[orderList,setOrderList]=useState([]);
+
+    useEffect(()=>{
+        async function getOrder() {
+            newCartRef = await getDocs(q);
+            newCartRef.docs.map((item,index)=>{
+                setOrderList(item.data().orders);
+                
+            }) 
         }
-        fetchTotalAmt();
+        getOrder()
     },[cart])
+    
+
     return(
         <>
-        <p>Here are your orders!!!!</p>
-        
+        <p>Here are your orders!!!!</p> 
+        {orderList.map((item,index)=>{
+           return(
+            <div>
+            <p>Ordered On - {Date(item.date)}</p>
+            ---------------------------------------------------------------------
+            <p>Name-{item.name}</p>
+            <p>Price-{item.price}</p>
+            <p>Quantity-{item.qty}</p>
+            <p>Total Quantity-{item.totalAmount}</p>
+            ----------------------------------------------------------------------
+            </div>
+           )
+        })
+           
+            
+        }     
         </>
     )
 }

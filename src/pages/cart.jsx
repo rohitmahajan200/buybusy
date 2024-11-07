@@ -5,11 +5,11 @@ import { useCartValues } from "../cartContext";
 import { Link } from "react-router-dom";
 
 export default function Cart(){
-    const {updateCart,removeFromCart,cart,setCarts}=useCartValues();
+    const {updateCart,removeFromCart,cart,setCarts,placeOrder}=useCartValues();
      const[product,setProducts]=useState([]);
      const mail=sessionStorage.getItem('id');
      const[cartValue,setCartValue]=useState(0);
-
+     let cartRef;
      async function fetchData(prod){
         const docRef = doc(db, "products",prod.item);
         const docSnap = await getDoc(docRef);
@@ -23,7 +23,7 @@ export default function Cart(){
     useEffect(()=>{ //function to retrive product in cart for user who is login...
         async function eff1(){
         let q=query(collection(db,"users"), where("email", "==" , mail));
-        const cartRef = await getDocs(q);
+        cartRef = await getDocs(q);
         const toSetCart=[];
         cartRef.docs.map((doc,index)=>{  
             const data=doc.data().cart;
@@ -51,14 +51,14 @@ export default function Cart(){
         }
         fetchTotalAmt();
     },[cart])
-    
+    //<Link to={"orders"}>Purchase</Link>
     return(
         <>
             <p>Cartttttt!!!</p>
             _______________________________
 
             <p>Total price:{cartValue}</p>
-            <p><button><Link to={"orders"}>Purchase</Link></button></p>
+            <p><button onClick={placeOrder}><Link to={"orders"}>Purchase</Link></button></p>
             _______________________________
             <br/>
 
@@ -69,9 +69,9 @@ export default function Cart(){
                         <p>{item.name}</p>
                         <p>{item.price}</p>
                         <p>
-                        <button onClick={(e)=>updateCart("A", cart[index].item, cart[index].qty, cart[index].price)}>+</button>{cart[index].qty}
-                        <button onClick={(e)=>updateCart("R", cart[index].item, cart[index].qty, cart[index].price)}>-</button></p>
-                        <button onClick={(e)=>{removeFromCart(cart[index].item, cart[index].qty, cart[index].price)}}>Remove From Cart</button>
+                        <button onClick={(e)=>updateCart("A",item.name, cart[index].item, cart[index].qty, cart[index].price)}>+</button>{cart[index].qty}
+                        <button onClick={(e)=>updateCart("R",item.name, cart[index].item, cart[index].qty, cart[index].price)}>-</button></p>
+                        <button onClick={(e)=>{removeFromCart(item.name,cart[index].item, cart[index].qty, cart[index].price)}}>Remove From Cart</button>
                         <p>___________________________________________________________________________________________________</p>
                     </div>
                 )

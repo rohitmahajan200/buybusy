@@ -12,17 +12,15 @@ const [product,setProduct]=useState([]);//to store the fetch data from database
                         id:doc.id,
                         ...doc.data()
                 }))                
-            setProduct([...productList])
+            setProduct([...productList]);
         }
         getProducts();         
     },[])
     
     const {addToCart,setCart}=useCartValues()
-    const handleaddTocart=(e,id,price)=>{
-        console.log("in handle add to cart ",id," price ",price);
-        
+    const handleaddTocart=(e,name,id,price)=>{        
         e.preventDefault();        
-        setCart({'id':id,'price':price});
+        setCart({'id':id,'name':name, 'price':price});
         addToCart();
     }
     
@@ -35,7 +33,7 @@ const [product,setProduct]=useState([]);//to store the fetch data from database
                 <p>{prod.name}</p>
                 <br />
                 <p>Price={prod.price} RS</p>
-                <button onClick={(e)=>handleaddTocart(e,prod.id,Number(prod.price))}>Add To Cart</button>
+                <button onClick={(e)=>handleaddTocart(e,prod.name,prod.id,Number(prod.price))}>Add To Cart</button>
                 <p>--------------------------------------</p>
             </div>
         ))
