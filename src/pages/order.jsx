@@ -16,7 +16,6 @@ export default function Order(){
             newCartRef = await getDocs(q);
             newCartRef.docs.map((item,index)=>{
                 setOrderList(item.data().orders);
-                
             }) 
         }
         getOrder()

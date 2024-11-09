@@ -9,7 +9,7 @@ export default function Cart(){
      const[product,setProducts]=useState([]);
      const mail=sessionStorage.getItem('id');
      const[cartValue,setCartValue]=useState(0);
-     let cartRef;
+    
      async function fetchData(prod){
         const docRef = doc(db, "products",prod.item);
         const docSnap = await getDoc(docRef);
@@ -23,11 +23,17 @@ export default function Cart(){
     useEffect(()=>{ //function to retrive product in cart for user who is login...
         async function eff1(){
         let q=query(collection(db,"users"), where("email", "==" , mail));
-        cartRef = await getDocs(q);
+        const cartRef = await getDocs(q);
         const toSetCart=[];
         cartRef.docs.map((doc,index)=>{  
             const data=doc.data().cart;
-            toSetCart.push(...data);
+            if(data){
+                toSetCart.push(...data);
+            }
+            else{
+                return;
+            }
+            
         })
         setCarts(toSetCart);
         }

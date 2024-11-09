@@ -6,7 +6,7 @@ export default function Home(){
 const [product,setProduct]=useState([]);//to store the fetch data from database
     useEffect(()=>{
         async function getProducts(){
-            const products= await getDocs(collection(db,"products"));            
+            const products= await getDocs(collection(db,"products"));           
             const productList=products.docs.map((doc)=>(
                 {
                         id:doc.id,
