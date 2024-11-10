@@ -46,8 +46,6 @@ export default function CustomeCartAuth({children}){
         alert("Error while adding to cart");    
     } }
 
-    //"A",item.name, cart[index].item, cart[index].qty, cart[index].price
-
     const deletCart=async()=>{
         const newCatRef = doc(db, 'users', cartRef.docs[0].id );
             await updateDoc(newCatRef, {
@@ -55,11 +53,10 @@ export default function CustomeCartAuth({children}){
         });
     }
     const updateCart=async(flag,name,item,quantity,price)=>{
-        //console.log("TO know what is item ",item);
+
         
         cartRef = await getDocs(q);
         const itemToUpdate=String(item);
-        console.log("CArt REf ",cartRef.docs[0].id);
         
         try {
 
@@ -106,7 +103,6 @@ export default function CustomeCartAuth({children}){
         try {
               cartRef.docs.map(async(doc)=>{
               await updateDoc(doc.ref,{
-                //removeFromCart(item.name,cart[index].item, cart[index].qty, cart[index].price)
               cart :arrayRemove({
                 item:itemToRemove,
                 name:name,
@@ -127,13 +123,12 @@ export default function CustomeCartAuth({children}){
             const year = date.getFullYear();
             const hours = String(date.getHours()).padStart(2, '0');
             const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            //const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
           };
         
           // Sample usage: just to show the formatted time
-          const currentDateTime = toString(formatDateTime(new Date()));
-          
+          const currentDateTime = formatDateTime(new Date());
           
 
         async function placeOrder() {
@@ -150,7 +145,7 @@ export default function CustomeCartAuth({children}){
                                 qty:item.qty,
                                 price:item.price,
                                 totalAmount:item.totalAmount,
-                                date:currentDateTime
+                                date:Date(currentDateTime)
                             })
                         })
                     })

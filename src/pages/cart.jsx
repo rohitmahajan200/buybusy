@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function Cart(){
     const {updateCart,removeFromCart,cart,setCarts,placeOrder}=useCartValues();
+
      const[product,setProducts]=useState([]);
      const mail=sessionStorage.getItem('id');
      const[cartValue,setCartValue]=useState(0);
@@ -38,9 +39,9 @@ export default function Cart(){
         setCarts(toSetCart);
         }
         eff1();
-    },[mail])
+    },[mail,setCarts,cart])
 
-    useEffect(()=>{ //function to fetc cart data to set in product state
+    useEffect(()=>{ //function to fetch cart data to set in product state
         async function fetchCart(){
         const productPromise=cart.map((prod,index)=>fetchData(prod));
         const productData=await Promise.all(productPromise);  
@@ -51,13 +52,15 @@ export default function Cart(){
 
     useEffect(()=>{ //function to set total amount
         async function fetchTotalAmt() {
+            let total=0;
             cart.map((item,index)=>{
-                setCartValue((prevState)=>prevState+item.totalAmount);    
+                total+=item.totalAmount
             })
+            setCartValue(total);
         }
         fetchTotalAmt();
     },[cart])
-    //<Link to={"orders"}>Purchase</Link>
+
     return(
         <>
             <p>Cartttttt!!!</p>
@@ -71,6 +74,7 @@ export default function Cart(){
             {product.map((item,index)=>{
                 return(
                     <div key={index}>
+            
                         <img src={item.image} alt={item.name}/>
                         <p>{item.name}</p>
                         <p>{item.price}</p>
@@ -79,6 +83,7 @@ export default function Cart(){
                         <button onClick={(e)=>updateCart("R",item.name, cart[index].item, cart[index].qty, cart[index].price)}>-</button></p>
                         <button onClick={(e)=>{removeFromCart(item.name,cart[index].item, cart[index].qty, cart[index].price)}}>Remove From Cart</button>
                         <p>___________________________________________________________________________________________________</p>
+                        
                     </div>
                 )
             })}

@@ -19,7 +19,7 @@ export default function Order(){
             }) 
         }
         getOrder()
-    },[cart])
+    },[cart,setOrderList])
     
 
     return(
@@ -28,7 +28,7 @@ export default function Order(){
         {orderList.map((item,index)=>{
            return(
             <div>
-            <p>Ordered On - {Date(item.date)}</p>
+            <p>Ordered On - {item.date}</p>
             ---------------------------------------------------------------------
             <p>Name-{item.name}</p>
             <p>Price-{item.price}</p>

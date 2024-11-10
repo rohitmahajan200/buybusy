@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react"
 import { Link, Outlet } from "react-router-dom"
 export default function Navbar(){
-    const [mail,setMail]=useState(sessionStorage.getItem('id'));
+
+    const [mail,setMail]=useState(sessionStorage.getItem("id")||"");
 
     function clearSession() {
-        sessionStorage.removeItem('id');
-        setMail();
+        sessionStorage.removeItem("id");
+        setMail("");
     }
 
     useEffect(()=>{
-        const handleStorageChange=()=>{
-            setMail(sessionStorage.getItem('id'));
-        }
-        window.addEventListener('storage',handleStorageChange);
-        return()=>{
-            window.removeEventListener('storage',handleStorageChange);
-        };
+        setMail(sessionStorage.getItem("id")||"");
     },[]);
 
+    console.log("Mail " ,mail);
+    
     return(
         <>
         <p>Buy Busy</p>
         <br />
         <Link to={'/'}>Home</Link>
         <br />
-        {mail?<Link to={'/'} onClick={clearSession}>Logout</Link>:<Link to={'/login'}>Sign In</Link>}
+        {mail?<Link  to={'/'} onClick={clearSession}>Logout</Link>:<Link to={'/login'}>Sign In</Link>}
         <br />
         {mail?<Link to={'/cart'}>Cart</Link>:null}
         <br />
