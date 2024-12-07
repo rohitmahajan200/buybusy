@@ -3,7 +3,7 @@ import { query, collection,getDocs,where,docs, doc,getDoc,getDocFromCache,onSnap
 import { db } from "../firebaseinit";
 import { useCartValues } from "../cartContext";
 import { Link } from "react-router-dom";
-
+import './cart.css'
 export default function Cart(){
     const {updateCart,removeFromCart,cart,setCarts,placeOrder}=useCartValues();
 
@@ -39,12 +39,12 @@ export default function Cart(){
         setCarts(toSetCart);
         }
         eff1();
-    },[mail,setCarts,cart])
+    },[mail,setCarts,product])
 
     useEffect(()=>{ //function to fetch cart data to set in product state
         async function fetchCart(){
         const productPromise=cart.map((prod,index)=>fetchData(prod));
-        const productData=await Promise.all(productPromise);  
+        const productData=await Promise.all(productPromise);
         setProducts(productData.filter(Boolean));
         }
         fetchCart();
@@ -60,34 +60,36 @@ export default function Cart(){
         }
         fetchTotalAmt();
     },[cart])
-
+    console.log(cart);
+    
     return(
-        <>
+        <div className="cartwall">
             <p>Cartttttt!!!</p>
-            _______________________________
-
+            <p>{cart.length == 0?"Cart is Empty":null}</p>
             <p>Total price:{cartValue}</p>
-            <p><button onClick={placeOrder}><Link to={"orders"}>Purchase</Link></button></p>
-            _______________________________
+            <p>{cart.length != 0? <button className="cartbutton" onClick={placeOrder}><Link to={"orders"}>Purchase</Link></button> :null}</p>
+        
             <br/>
-
+            <div>
             {product.map((item,index)=>{
                 return(
-                    <div key={index}>
-            
+                    <div key={index} className="cartproduct"> 
                         <img src={item.image} alt={item.name}/>
                         <p>{item.name}</p>
-                        <p>{item.price}</p>
-                        <p>
-                        <button onClick={(e)=>updateCart("A",item.name, cart[index].item, cart[index].qty, cart[index].price)}>+</button>{cart[index].qty}
-                        <button onClick={(e)=>updateCart("R",item.name, cart[index].item, cart[index].qty, cart[index].price)}>-</button></p>
-                        <button onClick={(e)=>{removeFromCart(item.name,cart[index].item, cart[index].qty, cart[index].price)}}>Remove From Cart</button>
-                        <p>___________________________________________________________________________________________________</p>
-                        
+                        <span>
+                        <span className="price">{item.price}</span>
+                        <button onClick={(e)=>updateCart("A",item.name, cart[index].item, cart[index].qty, cart[index].price)}>+</button>
+                        <span>{
+                         cart && cart.length>0 ? cart[index].qty:null
+                        }
+                        <button onClick={(e)=>updateCart("R",item.name, cart[index].item, cart[index].qty, cart[index].price)}>-</button></span>
+                        </span>
+                        <button className="cartbutton" onClick={(e)=>{removeFromCart(item.name,cart[index].item, cart[index].qty, cart[index].price)}}>Remove From Cart</button>                       
                     </div>
                 )
             })}
-        </>
+            </div>
+        </div>
         )
 
     }

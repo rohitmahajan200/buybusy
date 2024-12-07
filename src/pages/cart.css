@@ -1,0 +1,31 @@
+.cartwall{
+    display:grid;
+    gap:50px;
+    grid-template-columns:250px 250px 250px;
+}
+
+.cartproduct{
+    margin-bottom:20px;
+    padding:15px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3); 
+    border-radius:2%;
+}
+
+.price{
+    margin-right:30px;
+    padding: 10px;
+}
+
+.cartbutton{
+    background-color:#7064E5;
+    color: white;
+    width: 200px;
+    height:40px;
+    border-radius:5px;
+    margin: 8px;
+}
+.cartbutton:hover{
+    cursor: pointer;
+    background-color:white;
+    color: black;
+}

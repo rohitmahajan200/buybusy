@@ -2,100 +2,106 @@ import { collection, getDocs } from "firebase/firestore"
 import { db } from "../firebaseinit"
 import React, { useEffect, useState } from "react"
 import { useCartValues } from "../cartContext";
+import './home.css'
 export default function Home(){
 const [product,setProduct]=useState([]);//to store the fetch data from database
 const[type,setType]=useState("");
 const[range,setRange]=useState(0);
+const [filterProductList,setFilterProductList]=useState([]);
+let originalProductList;
     useEffect(()=>{ 
         async function getProducts(){
             const products= await getDocs(collection(db,"products")); //fetching products for sale        
-            const productList=products.docs.map((doc)=>(
+            originalProductList=products.docs.map((doc)=>(
                 {
                         id:doc.id,
                         ...doc.data()
                 }))
              
-            setProduct([...productList]);
+            setProduct([...originalProductList]);
+            console.log("ProductList original ",originalProductList);   
+            console.log("product-",product);
+                    
+            
         }
         getProducts()        
     },[setProduct])
+    
+    // useEffect(()=>{
+    //     setFilterProductList([...originalProductList])
+    // },[])
 
+    function changeType(typeToSet) {
+        setType(typeToSet); // Update the type state
+    }
     useEffect(()=>{ 
-        async function filterRange(){ //to filter data accourding to price
-        let productList=[]
-        product.map((item,index)=>{
-            console.log("price-",item.price," Range-",range," result-",item.price <= range);
-            if(item.price <= range){
-                productList.push(item);  
-        }                  
-        })
-        console.log("range List ",productList);   
-        setProduct(productList)
-    }
-        filterRange()        
-    },[range])
-
-    const {addToCart,setCart}=useCartValues()
-    const handleaddTocart=async(name,id,price)=>{        
-        //e.preventDefault();        
-        await setCart({'id':id,'name':name, 'price':price});
-        addToCart();
+        function applyFilters() {
+            let filteredList = [...product];
+        if (type) {
+            filteredList = filteredList.filter((item) => item.type === type);
+            setFilterProductList(filteredList)
+        }
+        // Apply range filter
+        if (range > 0) {
+            filteredList = filteredList.filter((item) => item.price <= range);
+        }
+        setFilterProductList(filteredList); // Update the product state with filtered data
+        }
+        applyFilters()
+    },[range,type,filterProductList])
+    
+         
+    const {addToCart}=useCartValues()
+    const handleaddTocart=async(name,id,price)=>{ //here we directly passing argument to function without using state for a bug fix
+        const newitem={id,name,price}
+        try {
+            await addToCart(newitem); 
+        } catch (error) {
+            alert("error while adding to cart=>",error)
+        }
     }
     
-    function changeType(typeToSet){
-        if(typeToSet!=null){
-        let productList=[]
-        product.map((item,index)=>{
-            if(item.type==typeToSet){
-                productList.push(item);  
-        }              
-        })
-        setProduct(productList)
-        }       
-    }
-    
-    return(<>
+    return(
+    <>
     {
-        <div>
-            ___________________________________________________________________________
-            <div>
-            <b>Filter</b>
-            <p>Catagories</p>
-            
-            <input type="range" min={1} max={500} step={5}  name="filterRange" value={range} onChange={(e)=>setRange(Number(e.target.value))}/>
+        <div className="filterbody">
+            <div className="filter">
+            <b>__________Filter____________<i class="fa-solid fa-filter"></i></b>
+            <br/>
+            <input className="filters" type="range" min={0} max={1300} step={5}  name="filterRange" value={range} onChange={(e)=>setRange(Number(e.target.value))}/>
             <label for="filterRange">{range}</label>
-
-            <input type="checkbox" name="idol" value={"idol"} onChange={(e)=>changeType(e.target.value)} />
+            <br/>
+            <b><p>______Catagories_______</p></b>
+            <input className="filters" type="checkbox" name="idol" value={"idol"} onChange={(e)=>changeType(e.target.value)} />
             <label for="idol">Idols</label>
-            
-            <input type="checkbox" name="Tshirt" value={"tshirt"} onClick={(e)=>changeType(e.target.value)} />
+            <br/>
+            <input className="filters" type="checkbox" name="Tshirt" value={"tshirt"} onClick={(e)=>changeType(e.target.value)} />
             <label for="Tshirt">Tshirts</label>
-            
-            <input type="checkbox" name="bags" value={"bags"} onClick={(e)=>changeType("bags")}/>
+            <br/>
+            <input className="filters" type="checkbox" name="bags" value={"bags"} onClick={(e)=>changeType("bags")}/>
             <label for="bags">Bags</label>
-            
-            <input type="checkbox" name="shoes" value={"shoes"} onClick={(e)=>changeType("shoes")} />
+            <br/>
+            <input className="filters" type="checkbox" name="shoes" value={"shoes"} onClick={(e)=>changeType("shoes")} />
             <label for="shoes">Shoes</label>
-
-            <input type="checkbox" name="books" value={"books"} onClick={(e)=>changeType("books")} />
+            <br/>
+            <input className="filters" type="checkbox" name="books" value={"books"} onClick={(e)=>changeType("books")} />
             <label for="books">Books</label>
             </div>
-            _______________________________________________________________________________
-            
-            {
 
-            product.map((prod)=>(                 
-            <div key={prod.id}>
+            <div className="product-wall">
+            {
+            filterProductList.map((prod)=>(                 
+            <div key={prod.id} className="product">
                 <img src={prod.image} alt={prod.name} />
-                <br />
+                <br/>
                 <p>{prod.name}</p>
                 <br />
                 <p>Price={prod.price} RS</p>
-                <button onClick={(e)=>handleaddTocart(prod.name,prod.id,Number(prod.price))}>Add To Cart</button>
-                <p>--------------------------------------</p>
+                <button className="homebtn" onClick={(e)=>handleaddTocart(prod.name,prod.id,Number(prod.price))}>Add To Cart</button>
             </div>
             ))
             }
+            </div>
         </div>
     }
     </>)

@@ -1,9 +1,7 @@
-import React, { useContext,createContext,useState,useEffect} from "react";
+import React, { useContext,createContext,useState} from "react";
 import { db, } from "./firebaseinit";
 import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
-//import { useNavigate } from "react-router-dom";
-
 const auth=getAuth();
 const authContext=createContext();
 
@@ -15,7 +13,6 @@ export const useAuthValue=()=>{
 export default function CustomAutContext({children}){
     
     const [user,setUser]=useState({name:"",mail:"",password:""});
-    //
     //const docRef=collection(db,"users");
     const register=async()=>{
         //this part handle registration
@@ -37,14 +34,13 @@ export default function CustomAutContext({children}){
         }
     }
 
-
+    const [mail, setMail] = useState(sessionStorage.getItem("id") || "");
     const login=async()=>{
-        //setUser({mail:user.mail,password:user.password});
         try {
             await signInWithEmailAndPassword(auth,user.mail,user.password);
             alert("Welcome ! Enjoy Shopping ");
-           //useEffect(()=>{navigate('/')});
             sessionStorage.setItem('id',user.mail)
+            setMail(user.mail)
             setUser({});
         } catch (error) {
             alert(error);
@@ -52,7 +48,7 @@ export default function CustomAutContext({children}){
     }
 
     return(
-        <authContext.Provider value={{register,login,user,setUser}}>
+        <authContext.Provider value={{register,login,user,setUser,mail}}>
             {children}
         </authContext.Provider>
     )

@@ -1,7 +1,6 @@
-import React,{ useContext,createContext,Children, useState } from "react";
+import React,{ useContext,createContext, useState } from "react";
 import { db } from "./firebaseinit";
-import { collection, doc,getDocs, setDoc, updateDoc, where, query, arrayUnion,arrayRemove,getDoc,deleteField } from "firebase/firestore";
-import firebase from "firebase/compat/app";
+import { collection, doc,getDocs, updateDoc, where, query, arrayUnion,arrayRemove,getDoc,deleteField } from "firebase/firestore";
 const cartContext=createContext();
 
 export const useCartValues=()=>{
@@ -9,41 +8,35 @@ export const useCartValues=()=>{
     return value;
 }
 
-export default function CustomeCartAuth({children}){
-    const [cartitem,setCart]=useState({});
-
+export default function CustomeCartAuth({children}){  
     const[cart,setCarts]=useState([]);
-    
     const mail=sessionStorage.getItem('id');
     let cartRef; 
     let newCartRef;
     let q=query(collection(db,"users"), where("email", "==" , mail));
-    //cartRef = await getDocs(q);
-
-    const addToCart=async()=>{
+    const addToCart=async(newitem)=>{
     try {
         cartRef = await getDocs(q);
         if(mail){
-                cartRef.docs.map(async(doc,index)=>{
+                for(const doc of cartRef.docs){
                     await updateDoc(doc.ref,{
                         cart:arrayUnion({
-                            item:cartitem.id,
-                            name:cartitem.name,
+                            item:newitem.id,
+                            name:newitem.name,
                             qty:1,
-                            price:cartitem.price,
-                            totalAmount:cartitem.price
+                            price:newitem.price,
+                            totalAmount:newitem.price
                         })
                     })
-                    alert("item added to cart ");
-                    setCart({});
-                }); 
+                    alert("item added to cart");
+                }; 
         }
         else{
             alert("please login first!!")
         }
     }
     catch (error) {
-        alert("Error while adding to cart");    
+        alert(error);    
     } }
 
     const deletCart=async()=>{
@@ -53,13 +46,9 @@ export default function CustomeCartAuth({children}){
         });
     }
     const updateCart=async(flag,name,item,quantity,price)=>{
-
-        
         cartRef = await getDocs(q);
         const itemToUpdate=String(item);
-        
         try {
-
             if(flag==="A"){
                     cartRef.docs.forEach(async(doc)=>{
                         await updateDoc(doc.ref,{
@@ -117,19 +106,6 @@ export default function CustomeCartAuth({children}){
             alert("Error while removing item from cart");    
         } }
 
-        const formatDateTime = (date) => {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-            const year = date.getFullYear();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            //const seconds = String(date.getSeconds()).padStart(2, '0');
-            return `${day}/${month}/${year} ${hours}:${minutes}`;
-          };
-        
-          // Sample usage: just to show the formatted time
-          const currentDateTime = formatDateTime(new Date());
-          
 
         async function placeOrder() {
             try {
@@ -145,7 +121,7 @@ export default function CustomeCartAuth({children}){
                                 qty:item.qty,
                                 price:item.price,
                                 totalAmount:item.totalAmount,
-                                date:Date(currentDateTime)
+                                date:Date()
                             })
                         })
                     })
@@ -155,7 +131,6 @@ export default function CustomeCartAuth({children}){
                 }
                
         });
-        console.log("date--",currentDateTime);
         deletCart("D");
         alert("order has been placed")
     }catch(err){
@@ -165,7 +140,7 @@ export default function CustomeCartAuth({children}){
     }
         
     return(
-        <cartContext.Provider value={{addToCart,setCart,updateCart,removeFromCart,cart,setCarts,placeOrder,newCartRef}}>
+        <cartContext.Provider value={{addToCart,updateCart,removeFromCart,cart,setCarts,placeOrder,newCartRef}}>
             {children}
         </cartContext.Provider>
     )

@@ -1,0 +1,46 @@
+.filterbody{
+    display: flex;
+    position: relative;
+    margin-top:8%;
+}
+
+.filter{
+    position: sticky;
+    top: 25%;
+    bottom: 0;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3); 
+    width:18%;
+    height: 100%;
+    border-radius:2%;
+    margin: 20px;
+}
+
+.filters{
+    margin: 10px;
+    padding: 5px;
+}
+
+.product-wall{
+    display:grid;
+    gap: 50px;
+    grid-template-columns:290px 290px 290px;
+}
+
+.product{
+    margin:2px;
+    padding:15px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3); 
+    border-radius:2%;
+}
+.homebtn{
+    background-color:#7064E5;
+    color: white;
+    width: 200px;
+    height:40px;
+    border-radius:5px;
+}
+.homebtn:hover{
+    cursor: pointer;
+    background-color:white;
+    color: black;
+}

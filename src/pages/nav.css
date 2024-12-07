@@ -1,0 +1,15 @@
+
+.bar{
+    display: flex;
+    height:35px;;
+    box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); 
+    padding: 20px;
+    align-items: center;
+    
+}
+.link{
+    justify-content: center;
+    align-items: center;
+    margin:30px;
+    position: relative;
+}
