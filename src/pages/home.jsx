@@ -5,49 +5,50 @@ import { useCartValues } from "../cartContext";
 import './home.css'
 export default function Home(){
 const [product,setProduct]=useState([]);//to store the fetch data from database
-const[type,setType]=useState("");
+const[type,setType]=useState([]);
 const[range,setRange]=useState(0);
 const [filterProductList,setFilterProductList]=useState([]);
-let originalProductList;
     useEffect(()=>{ 
         async function getProducts(){
             const products= await getDocs(collection(db,"products")); //fetching products for sale        
-            originalProductList=products.docs.map((doc)=>(
+            const originalProductList=products.docs.map((doc)=>(
                 {
                         id:doc.id,
                         ...doc.data()
                 }))
              
             setProduct([...originalProductList]);
-            console.log("ProductList original ",originalProductList);   
-            console.log("product-",product);
-                    
-            
+            setFilterProductList(originalProductList)
         }
-        getProducts()        
-    },[setProduct])
+        getProducts()    
+    },[])
     
-    // useEffect(()=>{
-    //     setFilterProductList([...originalProductList])
-    // },[])
-
     function changeType(typeToSet) {
-        setType(typeToSet); // Update the type state
+        setType((prevType)=>{
+            if(prevType.includes(typeToSet)){
+                return prevType.filter((item)=>item!=typeToSet);
+            }
+        else{
+            return [...prevType,typeToSet];
+        }
+        }); // Update the type state
     }
     useEffect(()=>{ 
-        let filteredList = [...product];
+        
         function applyFilters() {
-            
-        if (type) {
-            filteredList = filteredList.filter((item) => item.type === type);
-            setFilterProductList(filteredList)
-        }
-        // Apply range filter
-        if (range > 0) {
-            filteredList = filteredList.filter((item) => item.price <= range);
-        }
-        setFilterProductList(filteredList); // Update the product state with filtered data
-        }
+            let filteredList = [...product];
+            if (type.length>0) {
+                filteredList = filteredList.filter((item)=>type.includes(item.type));
+                setFilterProductList(filteredList)
+            }
+            // Apply range filter
+            if (range > 0) {
+                filteredList = filteredList.filter((item) => item.price <= range);
+            }
+            setFilterProductList(filteredList); // Update the product state with filtered data
+            }
+        
+       
         applyFilters()
     },[range,type,product])
     
