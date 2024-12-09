@@ -35,8 +35,9 @@ let originalProductList;
         setType(typeToSet); // Update the type state
     }
     useEffect(()=>{ 
+        let filteredList = [...product];
         function applyFilters() {
-            let filteredList = [...product];
+            
         if (type) {
             filteredList = filteredList.filter((item) => item.type === type);
             setFilterProductList(filteredList)
@@ -48,7 +49,7 @@ let originalProductList;
         setFilterProductList(filteredList); // Update the product state with filtered data
         }
         applyFilters()
-    },[range,type,filterProductList])
+    },[range,type,product])
     
          
     const {addToCart}=useCartValues()
@@ -72,19 +73,19 @@ let originalProductList;
             <label for="filterRange">{range}</label>
             <br/>
             <b><p>______Catagories_______</p></b>
-            <input className="filters" type="checkbox" name="idol" value={"idol"} onChange={(e)=>changeType(e.target.value)} />
+            <input className="filters" type="checkbox" name="type" value={"idol"} onChange={(e)=>changeType(e.target.value)} />
             <label for="idol">Idols</label>
             <br/>
-            <input className="filters" type="checkbox" name="Tshirt" value={"tshirt"} onClick={(e)=>changeType(e.target.value)} />
+            <input className="filters" type="checkbox" name="type" value={"tshirt"} onClick={(e)=>changeType(e.target.value)} />
             <label for="Tshirt">Tshirts</label>
             <br/>
-            <input className="filters" type="checkbox" name="bags" value={"bags"} onClick={(e)=>changeType("bags")}/>
+            <input className="filters" type="checkbox" name="type" value={"bags"} onClick={(e)=>changeType("bags")}/>
             <label for="bags">Bags</label>
             <br/>
-            <input className="filters" type="checkbox" name="shoes" value={"shoes"} onClick={(e)=>changeType("shoes")} />
+            <input className="filters" type="checkbox" name="type" value={"shoes"} onClick={(e)=>changeType("shoes")} />
             <label for="shoes">Shoes</label>
             <br/>
-            <input className="filters" type="checkbox" name="books" value={"books"} onClick={(e)=>changeType("books")} />
+            <input className="filters" type="checkbox" name="type" value={"books"} onClick={(e)=>changeType("books")} />
             <label for="books">Books</label>
             </div>
 
