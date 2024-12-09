@@ -16,7 +16,6 @@ const [filterProductList,setFilterProductList]=useState([]);
                         id:doc.id,
                         ...doc.data()
                 }))
-             
             setProduct([...originalProductList]);
             setFilterProductList(originalProductList)
         }

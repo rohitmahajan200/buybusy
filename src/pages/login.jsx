@@ -17,9 +17,9 @@ export default function Login(){
     return(
         <>
         <form onSubmit={handleLogin}>
-        <input value={user.mail} placeholder="Email" onChange={(e)=>setUser({name:"",mail:e.target.value})}/>
+        <input value={user.mail} placeholder="Email" type="email" onChange={(e)=>setUser({name:"",mail:e.target.value})}/>
         <br/>
-        <input value={user.password} placeholder="Password" onChange={(e)=>setUser({name:"",mail:user.mail,password:e.target.value})}/>
+        <input value={user.password} placeholder="Password" type="password" onChange={(e)=>setUser({name:"",mail:user.mail,password:e.target.value})}/>
         <br/>
         <button>Login</button>
         <br/>
