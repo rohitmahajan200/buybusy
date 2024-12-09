@@ -17,12 +17,12 @@ const [filterProductList,setFilterProductList]=useState([]);
                         ...doc.data()
                 }))
             setProduct([...originalProductList]);
-            setFilterProductList(originalProductList)
         }
         getProducts()    
     },[])
     
     function changeType(typeToSet) {
+        //setType([...type,typeToSet]);
         setType((prevType)=>{
             if(prevType.includes(typeToSet)){
                 return prevType.filter((item)=>item!=typeToSet);
@@ -36,6 +36,7 @@ const [filterProductList,setFilterProductList]=useState([]);
         
         function applyFilters() {
             let filteredList = [...product];
+
             if (type.length>0) {
                 filteredList = filteredList.filter((item)=>type.includes(item.type));
                 setFilterProductList(filteredList)
