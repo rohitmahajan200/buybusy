@@ -1,25 +1,30 @@
-import React,{ useEffect } from "react"
+import React,{ useEffect, useState } from "react"
 import { Link,useNavigate} from "react-router-dom"
-import { useAuthValue} from "../authContext"
+import { login,asyncLogin,authSelector, authReducer} from "../redux/authreducer";
+import { useDispatch, useSelector } from "react-redux";
 export default function Login(){
-    const {login,setUser,user,mail}=useAuthValue();
+    const dispatch=useDispatch();
+    const authState=useSelector(authSelector);   
+    const [loginCred,setLoginCred]=useState({
+        mail:'',
+        password:''
+    });
+
     const navigate=useNavigate();
     const handleLogin=async(e)=>{
         e.preventDefault();
-        await login();
-        const mail=sessionStorage.getItem('id');
-        const event=new Event("storageChange");
-        window.dispatchEvent(event);
-        if(mail){
+        dispatch(login(loginCred));
+        dispatch(asyncLogin());        
+        if(sessionStorage.getItem('id')){            
             navigate('/');
         }
     }
     return(
         <>
         <form onSubmit={handleLogin}>
-        <input value={user.mail} placeholder="Email" type="email" onChange={(e)=>setUser({name:"",mail:e.target.value})}/>
+        <input placeholder="Email" type="email" onChange={(e)=>setLoginCred({...loginCred,mail:e.target.value})} />
         <br/>
-        <input value={user.password} placeholder="Password" type="password" onChange={(e)=>setUser({name:"",mail:user.mail,password:e.target.value})}/>
+        <input placeholder="Password" type="password" onChange={(e)=>setLoginCred({...loginCred,password:e.target.value})}/>
         <br/>
         <button>Login</button>
         <br/>

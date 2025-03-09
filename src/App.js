@@ -8,6 +8,7 @@ import Cart from "./pages/cart";
 import Order from "./pages/order";
 import CustomAutContext from "./authContext";
 import CustomeCartAuth from "./cartContext";
+
 function App() { 
   const router =createBrowserRouter(
     [
