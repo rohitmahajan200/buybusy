@@ -63,14 +63,14 @@ export default function Cart(){
     console.log(cart);
     
     return(
-        <div className="cartwall">
+        <div>
             <p>Cartttttt!!!</p>
             <p>{cart.length == 0?"Cart is Empty":null}</p>
             <p>Total price:{cartValue}</p>
             <p>{cart.length != 0? <button className="cartbutton" onClick={placeOrder}><Link to={"orders"}>Purchase</Link></button> :null}</p>
         
             <br/>
-            <div>
+            <div className="cartwall">
             {product.map((item,index)=>{
                 return(
                     <div key={index} className="cartproduct"> 

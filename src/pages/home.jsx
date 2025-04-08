@@ -22,12 +22,13 @@ const [filterProductList,setFilterProductList]=useState([]);
     },[])
     
     function changeType(typeToSet) {
-        //setType([...type,typeToSet]);
-        setType((prevType)=>{
+        setType((prevType)=>{ 
+            //if use deselct the filter type the state getting update and page get render with selected items
             if(prevType.includes(typeToSet)){
                 return prevType.filter((item)=>item!=typeToSet);
             }
         else{
+            //state get update get filter upon selection of user
             return [...prevType,typeToSet];
         }
         }); // Update the type state
@@ -36,7 +37,6 @@ const [filterProductList,setFilterProductList]=useState([]);
         
         function applyFilters() {
             let filteredList = [...product];
-
             if (type.length>0) {
                 filteredList = filteredList.filter((item)=>type.includes(item.type));
                 setFilterProductList(filteredList)

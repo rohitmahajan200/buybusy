@@ -1,5 +1,6 @@
 import React from "react"
 import { useAuthValue } from "../authContext"
+import { Link } from "react-router-dom";
 export default function Register(){
     const{register,user,setUser}=useAuthValue();
 
@@ -24,6 +25,8 @@ export default function Register(){
         <br/>
 
         <button>Regsiter</button>
+        <br />
+        <Link to={'/login'}>Login</Link>
         <br/>
         </form>
         </>

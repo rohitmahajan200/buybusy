@@ -34,6 +34,8 @@ export default function Navbar(){
         
         {mail ? <Link className="link" to={'cart/orders'}><i class="fa-solid fa-bag-shopping">_Orders</i></Link> : null}
 
+        {mail ? <Link className="link" to={'/profile'}><i class="fa-solid fa-user">_Profile</i></Link>:null}
+
         {mail ? <Link to={'/'} className="link" onClick={clearSession}><i class="fa-solid fa-right-from-bracket">_Logout</i></Link> : <Link to={'/login'}><i class="fa-solid fa-right-to-bracket">_Sign In</i></Link>}
         </div>
         
