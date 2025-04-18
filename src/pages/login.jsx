@@ -1,6 +1,7 @@
 import React,{ useEffect } from "react"
 import { Link,useNavigate} from "react-router-dom"
 import { useAuthValue} from "../authContext"
+import './login.css'
 export default function Login(){
     const {login,setUser,user,mail}=useAuthValue();
     const navigate=useNavigate();
@@ -15,16 +16,16 @@ export default function Login(){
         }
     }
     return(
-        <>
+        <div id="parent">
         <form onSubmit={handleLogin}>
-        <input value={user.mail} placeholder="Email" type="email" onChange={(e)=>setUser({name:"",mail:e.target.value})}/>
+        <input value={user.mail} id="mail" placeholder="Email" type="email" onChange={(e)=>setUser({name:"",mail:e.target.value})}/>
         <br/>
-        <input value={user.password} placeholder="Password" type="password" onChange={(e)=>setUser({name:"",mail:user.mail,password:e.target.value})}/>
+        <input value={user.password} id="password" placeholder="Password" type="password" onChange={(e)=>setUser({name:"",mail:user.mail,password:e.target.value})}/>
         <br/>
-        <button>Login</button>
+        <button id="btn">Login</button>
         <br/>
+        <Link to={'/register'}>Not have an account?</Link>
         </form>
-        <Link to={'/register'}>Regsiter</Link>
-        </>
+        </div>
     )
 }

@@ -1,4 +1,6 @@
-
+body{
+    background-color: rgb(202, 202, 206);
+}
 .bar{
     display: flex;
     height:35px;

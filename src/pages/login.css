@@ -1,0 +1,29 @@
+/* #parent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+} */
+form{
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+#mail,#password,#name{
+    margin:5px;
+    width:10cm;
+    height:30px;
+    font-size: 15px;
+}
+
+#btn{
+    width:5cm;
+    height:30px;
+    background-color: #b0b1ce;
+    cursor: pointer;
+}
