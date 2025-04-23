@@ -3,7 +3,11 @@
     position: relative;
     margin-top:8%;
 }
-
+@media (max-width:700px) {
+    .filter{
+        display: none;
+    }
+  }
 .filter{
     position: sticky;
     top: 25%;
@@ -41,6 +45,7 @@
     padding:20px;
     box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3); 
     border-radius:2%;
+    /* min-width: 150px; */
 }
 .homebtn{
     background-color:#7064E5;

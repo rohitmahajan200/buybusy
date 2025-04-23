@@ -20,6 +20,8 @@ export default function Navbar(){
         const event=new Event("storageChange");
         window.dispatchEvent(event);
         setMail("");
+        console.log(mail);
+        
     }
 
     return(
@@ -27,6 +29,7 @@ export default function Navbar(){
         <div>
         <div className="bar">
         <span><i class="fa-solid fa-b"></i><i class="fa-solid fa-b"></i><strong><i>....Buy Busy....</i></strong></span>
+        
         
         <Link className="link" to={'/'}><i class="fa-solid fa-house">_Home</i></Link>
         
